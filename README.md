@@ -12,7 +12,7 @@
 在终端（macOS / Linux / WSL）中运行以下命令：
 
 ```bash
-curl -s https://raw.githubusercontent.com/nanyuzuo/tts-cli/main/install.sh | bash
+curl -s https://raw.githubusercontent.com/nanyuzuo/tts-cli/main/install_tts.sh | bash
 ```
 ## 📖 使用方法
 
