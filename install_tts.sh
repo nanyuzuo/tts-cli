@@ -20,9 +20,19 @@ CONFIG_DIR="$HOME/.config/tts-cli"
 echo -e "\033[1;34m>>> 欢迎使用TTS 智能语音转换工具 (v1.0)\033[0m"
 echo -e "\033[1;34m>>> 开始安装...\033[0m"
 
-# 1. 检查 Python3
-if ! command -v python3 &> /dev/null; then
-    echo -e "\033[1;31m错误: 未检测到 Python3，请先安装。\033[0m"
+# 1. 检查 Python3，MarkItDown 当前正式版要求 Python >= 3.10
+PYTHON_BIN=""
+for candidate in python3 /opt/homebrew/bin/python3 /opt/homebrew/Caskroom/miniforge/base/bin/python; do
+    if command -v "$candidate" &> /dev/null; then
+        if "$candidate" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)' 2>/dev/null; then
+            PYTHON_BIN="$candidate"
+            break
+        fi
+    fi
+done
+
+if [ -z "$PYTHON_BIN" ]; then
+    echo -e "\033[1;31m错误: 未检测到 Python 3.10+，请先安装新版 Python。\033[0m"
     exit 1
 fi
 
@@ -33,7 +43,7 @@ mkdir -p "$CONFIG_DIR"
 # 3. 创建虚拟环境 (如果不存在)
 if [ ! -d "$INSTALL_DIR/venv" ]; then
     echo -e "\033[1;33m-> 创建独立运行环境...\033[0m"
-    python3 -m venv "$INSTALL_DIR/venv"
+    "$PYTHON_BIN" -m venv "$INSTALL_DIR/venv"
 fi
 
 # 使用 markitdown[all] 确保支持 PDF, Word, Excel, OCR 等所有格式

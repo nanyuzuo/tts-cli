@@ -1,0 +1,4 @@
+interface:
+  display_name: "TTS Skill"
+  short_description: "Convert text and documents into speech audio"
+  default_prompt: "Use $tts-skill to convert this text or document into an MP3 audio file."
